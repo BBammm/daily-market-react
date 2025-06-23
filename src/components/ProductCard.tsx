@@ -23,7 +23,7 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
       </div>
       {/* 장바구니 담기 버튼 */}
       <button
-        className="border border-gray-300 text-sm font-bold py-2 px-6 rounded-lg flex items-center justify-center gap-1 mb-2 hover:bg-orange-50 transition min-w-[110px] cursor-pointer"
+        className="border border-gray-300 text-sm font-bold py-2 px-6 rounded-lg flex items-center justify-center gap-1 mb-2 hover:bg-[#FF784A] hover:text-white transition min-w-[110px] cursor-pointer"
         onClick={() => onAddToCart(product)}
         type="button"
       >

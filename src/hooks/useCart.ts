@@ -1,25 +1,34 @@
-// hooks/useCart.ts
-import { useState } from "react";
+import { create } from "zustand";
+import type { CartState } from "@/types/cart";
 import type { Product } from "@/types/product";
 
-export function useCart() {
-  const [cart, setCart] = useState<Product[]>([]);
-
-  function addToCart(product: Product) {
-    setCart(prev => {
-      // 이미 있으면 수량 늘리기(아니면 단순히 추가)
-      const exists = prev.find(item => item.id === product.id);
+export const useCart = create<CartState>((set) => ({
+  items: [],
+  addToCart: (product) =>
+    set((state) => {
+      const exists = state.items.find((i) => i.product.id === product.id);
       if (exists) {
-        // 확장 과제에서는 수량 상태 별도로!
-        return prev;
+        // 수량 증가
+        return {
+          items: state.items.map((i) =>
+            i.product.id === product.id
+              ? { ...i, quantity: i.quantity + 1 }
+              : i
+          ),
+        };
       }
-      return [...prev, product];
-    });
-  }
-
-  function removeFromCart(productId: number) {
-    setCart(prev => prev.filter(item => item.id !== productId));
-  }
-
-  return { cart, addToCart, removeFromCart };
-}
+      // 새로 추가
+      return { items: [...state.items, { product, quantity: 1 }] };
+    }),
+  removeFromCart: (id) =>
+    set((state) => ({
+      items: state.items.filter((i) => i.product.id !== id),
+    })),
+  changeQuantity: (id, quantity) =>
+    set((state) => ({
+      items: state.items.map((i) =>
+        i.product.id === id ? { ...i, quantity: Math.max(1, quantity) } : i
+      ),
+    })),
+  clearCart: () => set({ items: [] }),
+}));
