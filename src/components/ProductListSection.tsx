@@ -1,5 +1,5 @@
 "use client";
-// ProductListSection.tsx
+
 import React, { useState, useEffect, useMemo } from "react";
 import debounce from "lodash.debounce";
 import { fetchProducts, fetchProductsTotalCount } from "@/libs/api";
@@ -7,6 +7,7 @@ import ProductList from "@/components/ProductList";
 import SearchBar from "@/components/SearchBar";
 import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/product";
+import Pagination from "@/shared/pagination/Pagination";
 
 const PAGE_SIZE = 8;
 
@@ -58,32 +59,11 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
     <>
       <SearchBar value={search} onChange={handleSearch} />
       <ProductList products={products} onAddToCart={addToCart} />
-      <div className="flex gap-2 justify-center mt-4 items-center">
-        <button
-          className="border px-3 py-1 rounded disabled:opacity-50"
-          disabled={page === 1}
-          onClick={() => setPage((p) => Math.max(p - 1, 1))}
-        >
-          이전
-        </button>
-        {pageNumbers.map((num) => (
-          <button
-            key={num}
-            className={`px-3 py-1 rounded ${num === page ? "bg-blue-500 text-white" : "border"}`}
-            onClick={() => setPage(num)}
-            disabled={num === page}
-          >
-            {num}
-          </button>
-        ))}
-        <button
-          className="border px-3 py-1 rounded disabled:opacity-50"
-          disabled={page === totalPages || totalPages === 0}
-          onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
-        >
-          다음
-        </button>
-      </div>
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
       <div className="text-center text-xs text-gray-500 mt-2">
         {total > 0 ? `총 ${total}개 상품, ${totalPages}페이지` : "검색 결과가 없습니다."}
       </div>
