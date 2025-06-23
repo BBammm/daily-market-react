@@ -1,7 +1,7 @@
 // libs/apiService.ts
 import axios, { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 // 공통 request 함수 (data만 반환)
 const request = async <T>(

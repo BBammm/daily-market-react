@@ -1,12 +1,12 @@
 "use client";
-
+// ProductListSection.tsx
 import React, { useState, useEffect, useMemo } from "react";
 import debounce from "lodash.debounce";
-import type { Product } from "@/types/product";
-import { useCart } from "@/hooks/useCart";
-import SearchBar from "@/components/SearchBar";
-import ProductList from "@/components/ProductList";
 import { fetchProducts, fetchProductsTotalCount } from "@/libs/api";
+import ProductList from "@/components/ProductList";
+import SearchBar from "@/components/SearchBar";
+import { useCart } from "@/hooks/useCart";
+import type { Product } from "@/types/product";
 
 const PAGE_SIZE = 8;
 
@@ -37,16 +37,17 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
     return () => debouncedSet.cancel();
   }, [debouncedSet]);
 
-  // 검색어 or 페이지 변경 시, 두 개의 fetch 동시 실행
   useEffect(() => {
-    // (A) 페이지 데이터 fetch
+    console.log("fetch triggered, page:", page, "search:", debouncedSearch);
     fetchProducts({
       search: debouncedSearch,
       page,
       limit: PAGE_SIZE,
-    }).then(setProducts);
+    }).then((data: Product[]) => { // data의 타입을 Product[]로 명확히 지정
+      console.log('data = ', data);
+      setProducts(data); // <-- 이 부분을 수정했습니다.
+    });
 
-    // (B) 총 개수 fetch (항상 1페이지로 돌아갈 때도)
     fetchProductsTotalCount(debouncedSearch).then(setTotal);
   }, [debouncedSearch, page]);
 
@@ -65,7 +66,6 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
         >
           이전
         </button>
-        {/* 페이지 번호 */}
         {pageNumbers.map((num) => (
           <button
             key={num}
