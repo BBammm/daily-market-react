@@ -1,19 +1,25 @@
 import React from "react";
 import type { Product } from "@/types/product";
 import { CiShoppingCart } from "react-icons/ci";
+import { useCart } from "@/hooks/useCart";
+import { toast } from "react-hot-toast";
+
 
 interface ProductCardProps {
   product: Product;
-  onAddToCart: (product: Product) => void;
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
-  // 데이터에 img명이 없어서 Id로 임시 대체
-  const imageUrl = product.id ? `/images/product_${product.id}.png` : "/images/product_default.png"; // 예시 경로
+export default function ProductCard({ product }: ProductCardProps) {
+  const { addToCart } = useCart();
+  const imageUrl = product.id ? `/images/product_${product.id}.png` : "/images/product_default.png";
+
+  const addCartSuccess = () => {
+    addToCart(product);
+    toast.success("장바구니에 추가했습니다.");
+  };
 
   return (
     <div className="rounded-2xl overflow-hidden bg-white flex flex-col mb-5">
-      {/* 상품 이미지 */}
       <div className="w-full aspect-square bg-gray-50 flex items-center justify-center rounded-xl mb-3">
         <img
           src={imageUrl}
@@ -21,10 +27,9 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           className="max-w-[55%] max-h-[55%] object-contain"
         />
       </div>
-      {/* 장바구니 담기 버튼 */}
       <button
         className="border border-gray-300 text-sm font-bold py-2 px-6 rounded-lg flex items-center justify-center gap-1 mb-2 hover:bg-[#FF784A] hover:text-white transition min-w-[110px] cursor-pointer"
-        onClick={() => onAddToCart(product)}
+        onClick={addCartSuccess}
         type="button"
       >
         <CiShoppingCart size={20} />

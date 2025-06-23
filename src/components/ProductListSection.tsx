@@ -5,7 +5,6 @@ import debounce from "lodash.debounce";
 import { fetchProducts, fetchProductsTotalCount } from "@/libs/api";
 import ProductList from "@/components/ProductList";
 import SearchBar from "@/components/SearchBar";
-import { useCart } from "@/hooks/useCart";
 import type { Product } from "@/types/product";
 import Pagination from "@/shared/pagination/Pagination";
 
@@ -22,7 +21,6 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(initialTotal);
-  const { addToCart } = useCart();
 
   const debouncedSet = useMemo(
     () => debounce((v: string) => setDebouncedSearch(v), 300),
@@ -44,9 +42,9 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
       search: debouncedSearch,
       page,
       limit: PAGE_SIZE,
-    }).then((data: Product[]) => { // data의 타입을 Product[]로 명확히 지정
+    }).then((data: Product[]) => {
       console.log('data = ', data);
-      setProducts(data); // <-- 이 부분을 수정했습니다.
+      setProducts(data);
     });
 
     fetchProductsTotalCount(debouncedSearch).then(setTotal);
@@ -58,7 +56,7 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
   return (
     <>
       <SearchBar value={search} onChange={handleSearch} />
-      <ProductList products={products} onAddToCart={addToCart} />
+      <ProductList products={products} />
       <Pagination
         page={page}
         totalPages={totalPages}
