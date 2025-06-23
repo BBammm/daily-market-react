@@ -2,7 +2,7 @@ import ProductListSection from "@/components/ProductListSection";
 import { fetchProducts } from "@/libs/api";
 
 export default async function HomePage() {
-  const { products } = await fetchProducts();
+  const products = await fetchProducts(); // 배열로 반환됨
   console.log('products = ', products);
 
   return (
