@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import type { Product } from "@/types/product";
 import { CiShoppingCart } from "react-icons/ci";
 import { useCart } from "@/hooks/useCart";
@@ -21,9 +22,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="rounded-2xl overflow-hidden bg-white flex flex-col mb-5">
       <div className="w-full aspect-square bg-gray-50 flex items-center justify-center rounded-xl mb-3">
-        <img
+        <Image
           src={imageUrl}
           alt={product.name}
+          width={120}
+          height={120}
           className="max-w-[55%] max-h-[55%] object-contain"
         />
       </div>

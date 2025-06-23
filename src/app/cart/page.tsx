@@ -1,6 +1,9 @@
 "use client";
 
-import { useCart } from "@/hooks/useCart";
+import Link from "next/link";
+import Image from "next/image";
+import { useCart } from "@/hooks/useCart"; // 경로에 맞게!
+import { FiTrash2 } from "react-icons/fi";
 
 export default function CartPage() {
   const { items, removeFromCart, changeQuantity, clearCart } = useCart();
@@ -12,6 +15,9 @@ export default function CartPage() {
       </div>
     );
 
+  // 총 합계 계산
+  const total = items.reduce((sum, { product, quantity }) => sum + product.price * quantity, 0);
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-bold mb-6">장바구니</h1>
@@ -21,42 +27,62 @@ export default function CartPage() {
             key={product.id}
             className="flex items-center gap-4 border-b py-4"
           >
-            <img
-              src={`/images/product_${product.id}.png`}
-              alt={product.name}
-              className="w-16 h-16 object-contain bg-gray-100 rounded"
-            />
+            <div className="w-20 h-20 aspect-square bg-gray-50 flex items-center justify-center rounded-xl">
+              <Image
+                src={`/images/product_${product.id}.png`}
+                alt={product.name}
+                width={120}
+                height={120}
+                className="max-w-[65%] max-h-[65%] object-contain"
+              />
+            </div>
             <div className="flex-1">
               <div className="font-bold">{product.name}</div>
               <div className="text-gray-500">{product.price.toLocaleString()}원</div>
-              <div className="flex items-center gap-2 mt-2">
+              <div className="flex items-center gap-3 mt-2">
                 <button
-                  className="px-2 rounded border"
+                  className="w-7 h-7 flex items-center justify-center cursor-pointer rounded-full border border-gray-300 bg-white text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   onClick={() => changeQuantity(product.id, quantity - 1)}
                   disabled={quantity <= 1}
+                  aria-label="수량 감소"
                 >-</button>
                 <span className="font-semibold">{quantity}</span>
                 <button
-                  className="px-2 rounded border"
+                  className="w-7 h-7 flex items-center justify-center cursor-pointer rounded-full border border-gray-300 bg-white text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition disabled:opacity-40 disabled:cursor-not-allowed"
                   onClick={() => changeQuantity(product.id, quantity + 1)}
+                  aria-label="수량 증가"
                 >+</button>
               </div>
             </div>
             <button
-              className="ml-2 text-sm text-red-500 hover:underline"
+              className="ml-2 w-8 h-8 flex items-center justify-center rounded-full border border-red-200 bg-red-50 text-red-500 hover:bg-red-100 transition"
               onClick={() => removeFromCart(product.id)}
+              aria-label="상품 삭제"
             >
-              삭제
+              <FiTrash2 size={18} />
             </button>
           </li>
         ))}
       </ul>
-      <button
-        className="mt-8 w-full py-3 rounded bg-gray-200 text-gray-800 font-bold hover:bg-gray-300"
-        onClick={clearCart}
+
+      <div className="flex justify-between items-center mt-8">
+        <button
+          className="px-4 py-2 rounded bg-gray-100 text-gray-500 text-xs font-medium border border-gray-200 hover:bg-gray-200 transition"
+          onClick={clearCart}
+        >
+          비우기
+        </button>
+        <div className="font-bold text-lg text-gray-800">
+          총 합계: <span className="text-[#FF784A]">{total.toLocaleString()}원</span>
+        </div>
+      </div>
+
+      <Link
+        href="/order"
+        className="mt-6 w-full py-3 rounded-xl bg-[#FF784A] text-white text-lg font-bold shadow hover:bg-[#ff5400] transition text-center block"
       >
-        장바구니 비우기
-      </button>
+        주문하기
+      </Link>
     </div>
   );
 }

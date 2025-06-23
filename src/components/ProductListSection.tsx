@@ -51,7 +51,6 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
   }, [debouncedSearch, page]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
     <>
