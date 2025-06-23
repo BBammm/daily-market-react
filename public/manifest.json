@@ -1,0 +1,10 @@
+{
+  "name": "어글리어스 프론트엔드 김근영 과제",
+  "short_name": "김근영 과제",
+  "description": "간편하게 장바구니에 담고, 최종 결제까지! 어글리어스 프론트엔드 과제 프로젝트",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait"
+}
