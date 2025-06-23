@@ -8,11 +8,10 @@ interface ProductListProps {
 }
 
 export default function ProductList({ products, onAddToCart }: ProductListProps) {
-  if (products.length === 0)
-    return <div className="text-center text-gray-500">검색 결과가 없습니다.</div>;
+  if (products.length === 0) return <div className="text-center text-gray-500">상품이 없습니다.</div>;
 
   return (
-    <ul className="grid gap-4">
+    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[15px]">
       {products.map((product) => (
         <li key={product.id}>
           <ProductCard product={product} onAddToCart={onAddToCart} />

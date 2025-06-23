@@ -6,7 +6,7 @@ export default async function HomePage() {
   console.log('products = ', products);
 
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8">
+    <main className="max-w-[1024px] w-full mx-auto px-4 py-8">
       <ProductListSection initialProducts={products} />
     </main>
   );
