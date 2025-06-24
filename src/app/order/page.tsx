@@ -14,7 +14,7 @@ export default function OrderPage() {
   const { items, clearCart } = useCart();
   const [points, setPoints] = useState(0); // 보유 포인트
   const [usePoint, setUsePoint] = useState(false); // 포인트 사용 여부
-  const [pointInput, setPointInput] = useState(""); // 입력값(string)
+  const [pointInput, setPointInput] = useState("");
   const [appliedPoints, setAppliedPoints] = useState(0); // 실제 적용 포인트
   const router = useRouter();
 
@@ -35,7 +35,6 @@ export default function OrderPage() {
       setAppliedPoints(0);
       return;
     }
-    // 숫자만 파싱, 최대치 제어
     const value = Math.max(
       0,
       Math.min(Number(pointInput || 0), points, totalPrice)
@@ -123,7 +122,6 @@ export default function OrderPage() {
         )}
       </div>
 
-      {/* ✅ 결제정보 영역 */}
       <div className="border-t pt-6 mt-6 space-y-2 text-lg">
         <div className="flex justify-between">
           <span>상품 금액 합계</span>
@@ -135,11 +133,19 @@ export default function OrderPage() {
         </div>
         <div className="flex justify-between">
           <span>배송비</span>
-          <span>
+          <span className="text-right">
             {deliveryFee === 0 ? (
               <span className="text-green-600">무료</span>
             ) : (
               `${deliveryFee.toLocaleString()}원`
+            )}
+            {deliveryFee > 0 && FREE_DELIVERY_THRESHOLD - totalPrice > 0 && (
+              <div className="text-xs text-right text-gray-400 mb-1">
+                <span className="text-gray-800 font-bold">
+                  {(FREE_DELIVERY_THRESHOLD - totalPrice).toLocaleString()}원
+                </span>
+                {` 더 구매 시 배송비 무료!`}
+              </div>
             )}
           </span>
         </div>
@@ -155,7 +161,7 @@ export default function OrderPage() {
           toast.success("주문이 완료되었습니다!");
           setTimeout(() => {
             router.push("/");
-          }, 1000); // 1초 후 홈으로 이동
+          }, 1000);
         }}
       >
         주문 완료하기

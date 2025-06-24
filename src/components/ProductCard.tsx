@@ -3,7 +3,6 @@ import Image from "next/image";
 import type { Product } from "@/types/product";
 import { CiShoppingCart } from "react-icons/ci";
 import { useCart } from "@/hooks/useCart";
-import { toast } from "react-hot-toast";
 
 
 interface ProductCardProps {

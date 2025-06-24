@@ -35,7 +35,7 @@ export const useCart = create<CartState>((set) => ({
       // 1 이상, 재고 이하만 허용
       if (quantity < 1 || quantity > item.product.stock) {
         if (typeof window !== "undefined" && quantity > item.product.stock) {
-          toast.error("재고를 초과할 수 없습니다.");
+          toast.error("재고보다 많이 담을 수 없습니다.");
         }
         return state;
       }
