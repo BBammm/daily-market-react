@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import React from "react";
+import { useCart } from "@/hooks/useCart";
 
 export default function Header() {
   const [scrolled, setScrolled] = React.useState(false);
+  const { items } = useCart();
+  const cartCount = items.length;
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -40,11 +43,19 @@ export default function Header() {
           </Link>
           <Link
             href="/cart"
-            className={`flex items-center gap-1 text-base font-medium transition-colors ${
+            className={`flex items-center gap-1 text-base font-medium transition-colors relative ${
               scrolled ? "text-white" : "text-gray-800 hover:text-[#FF784A]"
             }`}
           >
             장바구니
+            {cartCount > 0 && (
+              <span
+                className="absolute -top-1 -right-4 flex items-center justify-center w-4 h-4 text-xs font-bold bg-red-500 text-white rounded-full shadow"
+                style={{ minWidth: "16px", height: "16px", fontSize: "10px" }}
+              >
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
       </nav>
