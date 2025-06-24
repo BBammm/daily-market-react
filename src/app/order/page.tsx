@@ -10,26 +10,6 @@ import { toast } from "react-hot-toast";
 const DELIVERY_FEE = Number(process.env.NEXT_PUBLIC_DELIVERY_FEE) || 3000;
 const FREE_DELIVERY_THRESHOLD = Number(process.env.NEXT_PUBLIC_FREE_DELIVERY_THRESHOLD) || 20000;
 
-export const metadata = {
-  title: "주문서 | 어글리어스 쇼핑몰",
-  description: "최종 결제 정보를 확인하고 주문을 완료하세요.",
-  robots: { index: true, follow: true },
-  openGraph: {
-    title: "주문서 | 어글리어스 쇼핑몰",
-    description: "어글리어스 쇼핑몰 주문서 페이지입니다.",
-    url: "https://uglyus-assignment.vercel.app/order",
-    type: "website",
-    images: [
-      {
-        url: "https://placehold.co/1200x630?text=주문서",
-        width: 1200,
-        height: 630,
-        alt: "주문서 대표이미지",
-      },
-    ],
-  },
-};
-
 export default function OrderPage() {
   const { items, clearCart } = useCart();
   const [points, setPoints] = useState(0); // 보유 포인트
