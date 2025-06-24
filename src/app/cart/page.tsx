@@ -5,6 +5,26 @@ import Image from "next/image";
 import { useCart } from "@/hooks/useCart"; // 경로에 맞게!
 import { FiTrash2 } from "react-icons/fi";
 
+export const metadata = {
+  title: "장바구니 | 어글리어스 쇼핑몰",
+  description: "담아둔 상품을 확인하고, 수량을 변경하거나 주문을 시작하세요.",
+  robots: { index: true, follow: true },
+  openGraph: {
+    title: "장바구니 | 어글리어스 쇼핑몰",
+    description: "어글리어스 쇼핑몰의 장바구니 페이지입니다.",
+    url: "https://uglyus-assignment.vercel.app/cart",
+    type: "website",
+    images: [
+      {
+        url: "https://placehold.co/1200x630?text=장바구니",
+        width: 1200,
+        height: 630,
+        alt: "장바구니 대표이미지",
+      },
+    ],
+  },
+};
+
 export default function CartPage() {
   const { items, removeFromCart, changeQuantity, clearCart } = useCart();
 
