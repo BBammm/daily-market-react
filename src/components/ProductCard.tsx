@@ -16,7 +16,6 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const addCartSuccess = () => {
     addToCart(product);
-    toast.success("장바구니에 추가했습니다.");
   };
 
   return (
