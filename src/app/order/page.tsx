@@ -55,9 +55,9 @@ export default function OrderPage() {
 
   if (!items.length)
     return (
-      <div className="text-center text-gray-500 py-16">
-        주문할 상품이 없습니다. <br />
-        <Link href="/" className="underline text-blue-500">상품 보러가기</Link>
+      <div className="max-w-2xl mx-auto px-4 py-10 text-center text-gray-500">
+        주문할 상품이 없습니다.
+        <Link href="/" className="py-3 mt-10 rounded-xl bg-[#FF784A] text-white text-lg font-bold block">상품 보러가기</Link>
       </div>
     );
 

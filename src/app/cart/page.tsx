@@ -10,8 +10,9 @@ export default function CartPage() {
 
   if (!items.length)
     return (
-      <div className="text-center text-gray-500 py-16">
+      <div className="max-w-2xl mx-auto px-4 py-10 text-center text-gray-500">
         장바구니에 담긴 상품이 없습니다.
+        <Link href="/" className="py-3 mt-10 rounded-xl bg-[#FF784A] text-white text-lg font-bold block">상품 보러가기</Link>
       </div>
     );
 
