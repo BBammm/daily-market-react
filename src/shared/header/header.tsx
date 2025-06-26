@@ -30,7 +30,7 @@ export default function Header() {
             scrolled ? "text-white" : "text-[#FF784A]"
           }`}
         >
-          어글리어스 마켓
+          데일리 마켓
         </Link>
         <div className="flex items-center gap-6">
           <Link
