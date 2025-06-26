@@ -9,12 +9,12 @@ export async function fetchProducts({
   search?: string;
   page?: number;
   limit?: number;
-} = {}): Promise<Product[]> {
+} = {}): Promise<{ items: Product[], total: number }> {
   const params = new URLSearchParams();
   if (search) params.append("q", search);
-  params.append("_page", page.toString());
-  params.append("_limit", limit.toString());
-  return apiService.get<Product[]>(`/products?${params.toString()}`);
+  params.append("page", String(page));
+  params.append("limit", String(limit));
+  return apiService.get<{ items: Product[]; total: number }>(`/products?${params.toString()}`);
 }
 
 export async function fetchProductsTotalCount(search = ""): Promise<number> {

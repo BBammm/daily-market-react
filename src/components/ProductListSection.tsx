@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import debounce from "lodash.debounce";
-import { fetchProducts, fetchProductsTotalCount } from "@/libs/api";
+import { fetchProducts } from "@/libs/api";
 import ProductList from "@/components/ProductList";
 import SearchBar from "@/components/SearchBar";
 import type { Product } from "@/types/product";
@@ -37,17 +37,14 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
   }, [debouncedSet]);
 
   useEffect(() => {
-    console.log("fetch triggered, page:", page, "search:", debouncedSearch);
     fetchProducts({
       search: debouncedSearch,
       page,
       limit: PAGE_SIZE,
-    }).then((data: Product[]) => {
-      console.log('data = ', data);
-      setProducts(data);
+    }).then(({ items, total }) => {
+      setProducts(items);
+      setTotal(total);
     });
-
-    fetchProductsTotalCount(debouncedSearch).then(setTotal);
   }, [debouncedSearch, page]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
