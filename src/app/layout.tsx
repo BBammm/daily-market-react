@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Header from "@/shared/header/header";
+import GuestInitProvider from "@/shared/guest/GuestInitProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,7 +59,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Toaster position="top-center" reverseOrder={false} />
         <Header/>
-        {children}
+        <GuestInitProvider>
+          {/* 기존 공통 Provider, 헤더, 바디 등 */}
+          {children}
+        </GuestInitProvider>
       </body>
     </html>
   );

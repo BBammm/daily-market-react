@@ -2,8 +2,8 @@ import React from "react";
 import Image from "next/image";
 import type { Product } from "@/types/product";
 import { CiShoppingCart } from "react-icons/ci";
-import { useCart } from "@/hooks/useCart";
-
+import { useCart } from "@/hooks/useCart"; // API 연동형
+import { toast } from "react-hot-toast";
 
 interface ProductCardProps {
   product: Product;
@@ -13,8 +13,13 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const imageUrl = product.id ? `/images/product_${product.id}.png` : "/images/product_default.png";
 
-  const addCartSuccess = () => {
-    addToCart(product);
+  const addCartSuccess = async () => {
+    try {
+      await addToCart(product.id, 1); // id만 전달, 수량은 1로 고정(원하면 파라미터화)
+      toast.success("장바구니에 추가했습니다.");
+    } catch (e: any) {
+      toast.error(e?.message || "담기에 실패했습니다.");
+    }
   };
 
   return (
