@@ -3,11 +3,14 @@
 import Link from "next/link";
 import React from "react";
 import { useCart } from "@/hooks/useCart";
+// import { useAuth } from "@/hooks/useAuth"; // 로그인 상태 연동 시 필요
 
 export default function Header() {
   const [scrolled, setScrolled] = React.useState(false);
   const { items } = useCart();
   const cartCount = items.length;
+
+  // const { isLoggedIn, logout } = useAuth(); // 실제 구현 시 사용
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -57,6 +60,35 @@ export default function Header() {
               </span>
             )}
           </Link>
+
+          {/* 로그인 상태에 따라 분기, 임시로 항상 비로그인 기준! */}
+          <Link
+            href="/auth/login"
+            className={`text-base font-medium transition-colors px-2 ${
+              scrolled ? "text-white" : "text-gray-800 hover:text-[#FF784A]"
+            }`}
+          >
+            로그인
+          </Link>
+          <Link
+            href="/auth/register"
+            className={`text-base font-medium transition-colors px-2 ${
+              scrolled ? "text-white" : "text-gray-800 hover:text-[#FF784A]"
+            }`}
+          >
+            회원가입
+          </Link>
+          {/* 
+          // 로그인/로그아웃 분기 샘플 
+          {isLoggedIn ? (
+            <button onClick={logout} className="...">로그아웃</button>
+          ) : (
+            <>
+              <Link href="/auth/login" ...>로그인</Link>
+              <Link href="/auth/register" ...>회원가입</Link>
+            </>
+          )} 
+          */}
         </div>
       </nav>
     </header>
