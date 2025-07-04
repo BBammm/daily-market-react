@@ -1,20 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { register } from "@/libs/authService";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");       // 이름 추가
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter();
+  const { isLoggedIn, fetchUser } = useAuth();
+    const router = useRouter();
+  
+    useEffect(() => {
+      fetchUser();
+    }, []);
+  
+    useEffect(() => {
+      if (isLoggedIn) router.replace("/");
+    }, [isLoggedIn, router]);
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(email, password, name);  // name도 전달
+      await register(email, password, name);
       toast.success("회원가입 완료! 로그인하세요.");
       router.push("/auth/login");
     } catch (err: any) {

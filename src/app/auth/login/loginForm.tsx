@@ -13,7 +13,6 @@ export default function LoginForm() {
 
   useEffect(() => {
     fetchUser();
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function LoginForm() {
       toast.error("로그인 실패: " + err.message);
     }
   };
-
+    
   if (isLoggedIn) return null;
 
   return (
