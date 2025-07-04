@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type { User } from "@/types/user";
+import { logout } from "@/libs/authService";
 
 interface AuthState {
   user: User | null;
@@ -11,5 +12,8 @@ export const useAuth = create<AuthState>((set) => ({
   user: null,
   isLoggedIn: false,
   login: (user) => set({ user, isLoggedIn: true }),
-  logout: () => set({ user: null, isLoggedIn: false }),
+  logout: async () => {
+    await logout(); // <- 실제 API 호출 후
+    set({ user: null, isLoggedIn: false });
+  },
 }));

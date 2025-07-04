@@ -10,6 +10,14 @@ export default function Header() {
   const { items } = useCart();
   const cartCount = items.length;
   const { user, isLoggedIn, logout } = useAuth();
+  const { fetchCart } = useCart();
+
+  const handleLogout = async () => {
+    await logout();
+    await fetchCart();
+  };
+
+  console.log(user);
 
   React.useEffect(() => {
     const onScroll = () => {
@@ -62,7 +70,7 @@ export default function Header() {
           {isLoggedIn ? (
             <>
               <span>{user?.nickname}님</span>
-              <button onClick={logout}>로그아웃</button>
+              <button onClick={handleLogout}>로그아웃</button>
             </>
           ) : (
             <>

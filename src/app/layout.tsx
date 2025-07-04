@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Header from "@/shared/header/header";
-import GuestInitProvider from "@/shared/guest/GuestInitProvider";
-import AuthInitProvider from "@/shared/AuthInitProvider";
+import AppInitProvider from "@/shared/AppInitProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,9 +59,9 @@ export default function RootLayout({
       <body>
         <Toaster />
         <Header />
-        <AuthInitProvider>
+        <AppInitProvider>
           {children}
-        </AuthInitProvider>
+        </AppInitProvider>
       </body>
     </html>
   );
