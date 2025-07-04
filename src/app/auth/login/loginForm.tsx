@@ -1,72 +1,33 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
+import { login, fetchMe } from "@/libs/authService";
 import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "react-hot-toast";
 
-export default function LoginForm() {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { login: setLogin } = useAuth();
   const router = useRouter();
-  const { login, isLoggedIn, loading, fetchUser } = useAuth();
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    if (isLoggedIn) router.replace("/");
-  }, [isLoggedIn, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login(email, password);
+      const user = await fetchMe();
+      setLogin(user);
       toast.success("로그인 성공!");
-    } catch (err: any) {
-      toast.error("로그인 실패: " + err.message);
+      router.replace("/");
+    } catch (e: any) {
+      toast.error(e.message || "로그인 실패");
     }
   };
-    
-  if (isLoggedIn) return null;
-
   return (
-    <div className="flex min-h-[60vh] items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-xs bg-white rounded-xl shadow px-7 py-8 flex flex-col gap-4"
-      >
-        <h1 className="text-2xl font-bold text-center mb-3">로그인</h1>
-        <input
-          type="email"
-          className="border rounded px-3 py-2 text-base focus:outline-[#FF784A]"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          placeholder="이메일"
-          autoFocus
-          required
-        />
-        <input
-          type="password"
-          className="border rounded px-3 py-2 text-base focus:outline-[#FF784A]"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          placeholder="비밀번호"
-          required
-        />
-        <button
-          type="submit"
-          disabled={loading}
-          className="mt-3 py-2 rounded-xl font-bold bg-[#FF784A] text-white hover:bg-[#ff5400] transition disabled:opacity-50"
-        >
-          {loading ? "로그인 중..." : "로그인"}
-        </button>
-        <p className="text-sm text-center mt-2">
-          아직 회원이 아니신가요?{" "}
-          <a href="/auth/register" className="text-[#FF784A] underline">회원가입</a>
-        </p>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input value={email} onChange={e=>setEmail(e.target.value)} />
+      <input value={password} onChange={e=>setPassword(e.target.value)} type="password" />
+      <button type="submit">로그인</button>
+    </form>
   );
 }

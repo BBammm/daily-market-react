@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import Header from "@/shared/header/header";
 import GuestInitProvider from "@/shared/guest/GuestInitProvider";
+import AuthInitProvider from "@/shared/AuthInitProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,13 +57,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Toaster position="top-center" reverseOrder={false} />
-        <Header/>
-        <GuestInitProvider>
-          {/* 기존 공통 Provider, 헤더, 바디 등 */}
+      <body>
+        <Toaster />
+        <Header />
+        <AuthInitProvider>
           {children}
-        </GuestInitProvider>
+        </AuthInitProvider>
       </body>
     </html>
   );
