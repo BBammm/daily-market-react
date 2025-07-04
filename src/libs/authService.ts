@@ -1,8 +1,8 @@
 import { User } from "@/types/user";
 import { apiService } from "./apiService";
 
-export async function register(email: string, password: string) {
-  return apiService.post("/auth/register", { email, password });
+export async function register(email: string, password: string, name: string) {
+  return apiService.post("/auth/register", { email, password, name });
 }
 
 export async function login(email: string, password: string) {

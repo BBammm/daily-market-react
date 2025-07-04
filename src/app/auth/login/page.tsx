@@ -1,32 +1,15 @@
-// app/auth/login/page.tsx (로그인 폼)
-"use client";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/utils/authUtils";
+import LoginForm from "./loginForm"; // 👈 클라이언트 컴포넌트 분리
 
-import React, { useState } from "react";
-import { login } from "@/libs/authService";
-import { useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
+export default async function LoginPage() {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get("jwt")?.value;
+  const user = token ? verifyJwt(token) : null;
 
-export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const router = useRouter();
+  if (user) redirect("/"); // SSR에서 인증된 유저면 즉시 홈으로
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login(email, password); // 성공시 쿠키에 jwt 저장됨
-      toast.success("로그인 성공!");
-      router.push("/"); // 홈으로 이동
-    } catch (err: any) {
-      toast.error("로그인 실패: " + err.message);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="...">
-      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="이메일" />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="비밀번호" />
-      <button type="submit">로그인</button>
-    </form>
-  );
+  // **폼 자체는 CSR 컴포넌트로 분리해서 import**
+  return <LoginForm />;
 }

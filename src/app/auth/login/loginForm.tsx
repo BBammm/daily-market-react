@@ -1,26 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
-import { register } from "@/libs/authService";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { useAuth } from "@/hooks/useAuth";
 
-export default function RegisterPage() {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");       // 이름 추가
   const [password, setPassword] = useState("");
   const router = useRouter();
+  const { login, isLoggedIn, loading, fetchUser } = useAuth();
+
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) router.replace("/");
+  }, [isLoggedIn, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await register(email, password, name);  // name도 전달
-      toast.success("회원가입 완료! 로그인하세요.");
-      router.push("/auth/login");
+      await login(email, password);
+      toast.success("로그인 성공!");
     } catch (err: any) {
-      toast.error("회원가입 실패: " + err.message);
+      toast.error("로그인 실패: " + err.message);
     }
   };
+
+  if (isLoggedIn) return null;
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
@@ -28,7 +38,7 @@ export default function RegisterPage() {
         onSubmit={handleSubmit}
         className="w-full max-w-xs bg-white rounded-xl shadow px-7 py-8 flex flex-col gap-4"
       >
-        <h1 className="text-2xl font-bold text-center mb-3">회원가입</h1>
+        <h1 className="text-2xl font-bold text-center mb-3">로그인</h1>
         <input
           type="email"
           className="border rounded px-3 py-2 text-base focus:outline-[#FF784A]"
@@ -36,14 +46,6 @@ export default function RegisterPage() {
           onChange={e => setEmail(e.target.value)}
           placeholder="이메일"
           autoFocus
-          required
-        />
-        <input
-          type="text"
-          className="border rounded px-3 py-2 text-base focus:outline-[#FF784A]"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          placeholder="이름"
           required
         />
         <input
@@ -56,13 +58,14 @@ export default function RegisterPage() {
         />
         <button
           type="submit"
-          className="mt-3 py-2 rounded-xl font-bold bg-[#FF784A] text-white hover:bg-[#ff5400] transition"
+          disabled={loading}
+          className="mt-3 py-2 rounded-xl font-bold bg-[#FF784A] text-white hover:bg-[#ff5400] transition disabled:opacity-50"
         >
-          회원가입
+          {loading ? "로그인 중..." : "로그인"}
         </button>
         <p className="text-sm text-center mt-2">
-          이미 계정이 있으신가요?{" "}
-          <a href="/auth/login" className="text-[#FF784A] underline">로그인</a>
+          아직 회원이 아니신가요?{" "}
+          <a href="/auth/register" className="text-[#FF784A] underline">회원가입</a>
         </p>
       </form>
     </div>
