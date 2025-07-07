@@ -58,9 +58,6 @@ export default function ProductListSection({ initialProducts, initialTotal }: Pr
         totalPages={totalPages}
         onPageChange={setPage}
       />
-      <div className="text-center text-xs text-gray-500 mt-2">
-        {total > 0 ? `총 ${total}개 상품, ${totalPages}페이지` : "검색 결과가 없습니다."}
-      </div>
     </>
   );
 }

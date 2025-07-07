@@ -102,7 +102,11 @@ export default function CartPage() {
                         className="w-7 h-7 flex items-center justify-center cursor-pointer rounded-full border border-gray-300 bg-white text-gray-500 hover:bg-blue-50 hover:text-blue-600 transition disabled:opacity-40 disabled:cursor-not-allowed"
                         onClick={() => handleQuantity(product.id, quantity + 1)}
                         aria-label="수량 증가"
+                        disabled={quantity >= product.stock}
                       >+</button>
+                      {quantity >= product.stock && (
+                        <span className="text-xs text-red-500 ml-2">최대 수량입니다</span>
+                      )}
                     </div>
                   </div>
                   <button

@@ -10,12 +10,19 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { items, addToCart } = useCart();
   const imageUrl = product.id ? `/images/product_${product.id}.png` : "/images/product_default.png";
+  const cartItem = items.find((i) => i.product.id === product.id);
+  const cartQuantity = cartItem ? cartItem.quantity : 0;
+  const isSoldOut = cartQuantity >= product.stock;
 
   const addCartSuccess = async () => {
+    if (isSoldOut) {
+      toast.error("더 이상 담을 수 없습니다. 재고 초과!");
+      return;
+    }
     try {
-      await addToCart(product.id, 1); // id만 전달, 수량은 1로 고정(원하면 파라미터화)
+      await addToCart(product.id, 1);
       toast.success("장바구니에 추가했습니다.");
     } catch (e: any) {
       toast.error(e?.message || "담기에 실패했습니다.");
