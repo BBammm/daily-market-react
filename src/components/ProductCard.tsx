@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="rounded-2xl overflow-hidden bg-white flex flex-col mb-5">
-      <div className="w-full aspect-square bg-gray-50 flex items-center justify-center rounded-xl mb-3">
+      <div className="w-full aspect-square bg-gray-50 flex items-center justify-center rounded-xl mb-3 relative">
         <Image
           src={imageUrl}
           alt={product.name}
@@ -39,6 +39,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           height={120}
           className="max-w-[55%] max-h-[55%] object-contain"
         />
+        {isSoldOut && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
+            <span className="text-white text-xl font-bold tracking-widest">품절</span>
+          </div>
+        )}
       </div>
       <button
         className="border border-gray-300 text-sm font-bold py-2 px-6 rounded-lg flex items-center justify-center gap-1 mb-2 hover:bg-[#FF784A] hover:text-white transition min-w-[110px] cursor-pointer"
@@ -46,7 +51,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         type="button"
       >
         <CiShoppingCart size={20} />
-        담기
+        {isSoldOut ? "품절" : "담기"}
       </button>
       <div className="mt-2">
         <span className="inline-block bg-[#FF784A] text-white px-3 py-1 text-xs font-bold rounded-lg mb-1">
