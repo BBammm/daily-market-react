@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useCart } from "@/hooks/useCart";
 import { fetchPoints } from "@/libs/api";
 import { toast } from "react-hot-toast";
+import { createOrder } from "@/libs/orderService";
 
 const DELIVERY_FEE = Number(process.env.NEXT_PUBLIC_DELIVERY_FEE) || 3000;
 const FREE_DELIVERY_THRESHOLD = Number(process.env.NEXT_PUBLIC_FREE_DELIVERY_THRESHOLD) || 20000;
@@ -50,6 +51,27 @@ export default function OrderPage() {
     // 숫자만 입력 허용
     const val = e.target.value.replace(/[^0-9]/g, "");
     setPointInput(val);
+  };
+  
+  const handleOrder = async () => {
+    try {
+      await createOrder({
+        items: items.map(({ product, quantity }) => ({
+          productId: product.id,
+          quantity,
+        })),
+        totalAmount: finalAmount,
+        appliedPoints,
+        deliveryFee,
+      });
+      clearCart();
+      toast.success("주문이 완료되었습니다!");
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } catch (e: any) {
+      toast.error(e?.response?.data?.error || "주문 실패");
+    }
   };
 
   if (!items.length)
@@ -156,13 +178,7 @@ export default function OrderPage() {
       </div>
       <button
         className="mt-6 w-full py-3 rounded-xl bg-[#FF784A] text-white text-lg font-bold shadow hover:bg-[#ff5400] transition"
-        onClick={() => {
-          clearCart();
-          toast.success("주문이 완료되었습니다!");
-          setTimeout(() => {
-            router.push("/");
-          }, 1000);
-        }}
+        onClick={handleOrder}
       >
         주문 완료하기
       </button>

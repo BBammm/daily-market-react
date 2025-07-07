@@ -25,6 +25,6 @@ export async function fetchProductsTotalCount(search = ""): Promise<number> {
 }
 
 export async function fetchPoints(): Promise<number> {
-  const data = await apiService.get<{ points: number }>("/points");
-  return data.points;
+  const data = await apiService.get<{ point: number }>("/points");
+  return data.point;
 }
