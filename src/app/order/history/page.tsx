@@ -6,12 +6,18 @@ import { format } from "date-fns";
 
 export default function OrderHistoryPage() {
   const now = new Date();
-  const [startDate, setStartDate] = useState(() =>
-    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime()
-  );
-  const [endDate, setEndDate] = useState(() =>
-    new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime()
-  );
+
+  const [startDate, setStartDate] = useState(() => {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  });
+
+  const [endDate, setEndDate] = useState(() => {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    d.setHours(23, 59, 59, 999);
+    return d.getTime();
+  });
   const [orders, setOrders] = useState<any[]>([]);
 
   useEffect(() => {
@@ -26,23 +32,27 @@ export default function OrderHistoryPage() {
     <div className="max-w-2xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-bold mb-6">주문 내역</h1>
       <div className="mb-4 flex gap-2 items-center">
-        <input
-          type="date"
-          value={format(new Date(startDate), "yyyy-MM-dd")}
-          onChange={e =>
-            setStartDate(new Date(e.target.value).getTime())
-          }
-          className="border rounded px-2 py-1"
-        />
-        <span>~</span>
-        <input
-          type="date"
-          value={format(new Date(endDate), "yyyy-MM-dd")}
-          onChange={e =>
-            setEndDate(new Date(e.target.value).getTime())
-          }
-          className="border rounded px-2 py-1"
-        />
+      <input
+        type="date"
+        value={format(new Date(startDate), "yyyy-MM-dd")}
+        onChange={e => {
+          const d = new Date(e.target.value);
+          d.setHours(0, 0, 0, 0);
+          setStartDate(d.getTime());
+        }}
+        className="border rounded px-2 py-1"
+      />
+      <span>~</span>
+      <input
+        type="date"
+        value={format(new Date(endDate), "yyyy-MM-dd")}
+        onChange={e => {
+          const d = new Date(e.target.value);
+          d.setHours(23, 59, 59, 999);
+          setEndDate(d.getTime());
+        }}
+        className="border rounded px-2 py-1"
+      />
       </div>
       {/* 주문 목록 렌더 */}
       {orders.length === 0 ? (
