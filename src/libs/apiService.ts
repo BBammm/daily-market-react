@@ -28,6 +28,9 @@ const request = async <T>(
     return response.data;
   } catch (error: unknown) {
     const axiosError = error as AxiosError;
+    if ( url === "/auth/me" && (axiosError?.response?.status === 401 || axiosError?.response?.status === 403)) {
+      return null as any;
+    }
     throw new Error(
       axiosError?.response?.data
         ? JSON.stringify(axiosError.response.data)

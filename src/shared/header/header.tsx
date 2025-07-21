@@ -89,7 +89,9 @@ export default function Header() {
                 onClick={() => setDropdownOpen((prev) => !prev)}
                 type="button"
               >
-                <span className="font-bold">{user?.nickname}님</span>
+                <span className={`font-bold ${
+                  scrolled ? "text-white hover:text-[#FF784A]" : "text-gray-800 hover:text-[#FF784A]"
+                }`}>{user?.nickname}님</span>
                 <svg className="ml-1 w-4 h-4" viewBox="0 0 20 20">
                   <path fill="currentColor" d="M5 8l5 5 5-5H5z" />
                 </svg>
