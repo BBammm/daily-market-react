@@ -58,8 +58,8 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <Toaster />
-        <Header />
         <AppInitProvider>
+          <Header />
           {children}
         </AppInitProvider>
       </body>

@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 
 // 인증이 필요한 경로(로그인 필요)
 const protectedRoutes = [
-  "/mypage",
+  "/auth/mypage",
   "/order",
   "/order/history",
   "/cart",
@@ -68,8 +68,8 @@ export async function middleware(req: NextRequest) {
 // 하위 경로 포함 → "/mypage(.*)", "/order(.*)", 등
 export const config = {
   matcher: [
-    "/mypage",
-    "/mypage/(.*)",
+    "/auth/mypage",
+    "/auth/mypage/(.*)",
     "/order",
     "/order/(.*)",
     "/cart",

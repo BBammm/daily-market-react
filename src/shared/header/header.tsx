@@ -14,6 +14,8 @@ export default function Header() {
   const { user, isLoggedIn, logout } = useAuth();
   const cartCount = items.length;
 
+  console.log("헤더 렌더 user", user, "isLoggedIn", isLoggedIn);
+
   // 바깥 클릭 시 드롭다운 닫기
   useEffect(() => {
     function handleClick(e: MouseEvent) {

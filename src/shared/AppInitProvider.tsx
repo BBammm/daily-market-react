@@ -12,7 +12,13 @@ export default function AppInitProvider({ children }: { children: React.ReactNod
   useEffect(() => {
     ensureGuestId().then(() => {
       // 이후 유저/카트 등 fetch 시작
-      fetchMe().then(user => login(user)).catch(() => logout());
+      fetchMe().then(user => {
+        console.log("로그인 성공", user)
+        login(user)
+      }).catch(() => {
+        console.log("로그아웃")
+        logout()
+      });
       fetchCart();
     });
   }, [login, logout, fetchCart]);

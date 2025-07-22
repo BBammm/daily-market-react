@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { login, fetchMe } from "@/libs/authService";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { toast } from "react-hot-toast";
 import { useCart } from "@/hooks/useCart";
@@ -12,6 +12,7 @@ export default function LoginPage() {
   const { login: setLogin } = useAuth();
   const router = useRouter();
   const { fetchCart } = useCart();
+  const searchParams = useSearchParams();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,11 +22,14 @@ export default function LoginPage() {
       setLogin(user);
       await fetchCart();
       toast.success("로그인 성공!");
-      router.replace("/");
+  
+      const next = searchParams.get("next");
+      router.replace(next || "/");
     } catch (e: any) {
       toast.error(e.message || "로그인 실패");
     }
   };
+
   return (
     <div className="flex min-h-[60vh] items-center justify-center">
       <form

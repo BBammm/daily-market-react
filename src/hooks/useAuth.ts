@@ -11,7 +11,7 @@ interface AuthState {
 export const useAuth = create<AuthState>((set) => ({
   user: null,
   isLoggedIn: false,
-  login: (user) => set({ user, isLoggedIn: true }),
+  login: (user) => set({ user, isLoggedIn: !!user }),
   logout: async () => {
     await logout(); // <- 실제 API 호출 후
     set({ user: null, isLoggedIn: false });
