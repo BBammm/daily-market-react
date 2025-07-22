@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -13,8 +14,7 @@ export default function Header() {
   const { items, fetchCart } = useCart();
   const { user, isLoggedIn, logout } = useAuth();
   const cartCount = items.length;
-
-  console.log("헤더 렌더 user", user, "isLoggedIn", isLoggedIn);
+  const router = useRouter(); // 추가
 
   // 바깥 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function Header() {
     await logout();
     await fetchCart();
     setDropdownOpen(false);
+    router.replace("/");
   };
 
   return (

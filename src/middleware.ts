@@ -9,7 +9,6 @@ const protectedRoutes = [
   "/auth/mypage",
   "/order",
   "/order/history",
-  "/cart",
 ];
 
 // 로그인/회원가입 시 접근 제한(로그인한 유저는 접근 불가)
@@ -72,8 +71,6 @@ export const config = {
     "/auth/mypage/(.*)",
     "/order",
     "/order/(.*)",
-    "/cart",
-    "/cart/(.*)",
     "/auth/login",
     "/auth/register",
   ],
